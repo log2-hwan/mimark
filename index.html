@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Mi chin geot gattayo</title>
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<script src="flotr2.min.js"></script>
+		<script src="http://code.jquery.com/jquery-latest.js"></script>
+		<style>
+		* {
+			-webkit-perspective-origin: 0 0 0;
+			-webkit-perspective: 1000;
+		}
+		html, body {
+			margin: 0;
+			padding: 0;
+			width: 100%;
+			height: 100%;
+			background: #222;
+		}
+		
+		#social {
+			position: absolute;
+			overflow: hidden;
+			top: 100px;
+			right: 0px;
+			z-index: 99999;
+		}
+		
+		#logo {
+			position: absolute;
+			top: 20px;
+			right: 20px;
+			width: 375px;
+			height: 60px;
+			text-indent: -9999em;
+			background: url('mimark_logo.png') no-repeat;
+			background-size: 100% 100%;
+			z-index: 99999;
+		}
+		
+		p#counter {
+			position: absolute;
+			top: 0px;
+			left: 20px;
+			color: #ccc;
+			font-family: "Helvetica Neue", "Helvetica", Arial, sans-serif;
+			font-weight: 700;
+			font-size: 20px;
+			line-height: 25px;
+		}
+		
+		ul {
+			margin: 0;
+			padding: 0;
+			width: 100%;
+			height: 100%;
+		}
+		
+		li {
+			font-family: "Apple SD Gothic Neo", "AppleSDGothicNeo", "SDGothicNeo1", "Malgun Gothic", "NanumGothic", "Gulim", sans-serif;
+			color: #ccc;
+		}
+		#fps {
+			width: 300px;
+			height: 200px;
+		}
+		#info {
+			display: inline-block;
+			position: absolute;
+			bottom: 10px;
+			right: 10px;
+		}
+		#splash {
+			margin: 0;
+			padding: 0;
+			width: 100%;
+			height: 100%;
+			background: url('mimark_bg.jpg') no-repeat;
+			background-size: cover;
+			opacity: 0;
+			-webkit-transition: opacity 2s;
+			z-index: 99998;
+		}
+		</style>
+		<script>
+			var c, buf, bx = 0, by = 0, bz = 0, t, fps = [], s, p, opt, cur;
+			window.onload = function() {
+				$('#splash').css('opacity',1);
+				setTimeout(function() {
+					$('#splash').css('opacity',0).bind('webkitTransitionEnd',function() {					
+						try { 
+							c = new webkitAudioContext(); 
+							var xhr = new XMLHttpRequest();
+							xhr.responseType = 'arraybuffer';
+							xhr.open('GET','mi.wav',true);
+							xhr.onload = function() {
+								buf = c.createBuffer(xhr.response,false);
+							};
+							xhr.send();
+						} catch(e) {}
+						setInterval(mi,50);
+						s = Date.now();
+						p = document.getElementById('fps');
+						p.style.width = (window.innerWidth-20)+'px';
+						p.style.height = '200px';
+						opt = {
+							yaxis : {
+								max : 120,
+								min : 0
+							}
+						};
+						window.webkitRequestAnimationFrame(mi2);
+					});
+				},2000)
+			};
+			
+			function mi2(fingers) {
+				var time = Date.now();
+				var d = (time-t)/1000;
+				t = time;
+				cur = (1/d).toFixed(1);
+				$('ul li').each(function() {
+					var $this = $(this);
+					var idx = $('ul li').index(this);
+					//$this.css('color','rgb('+(bx+30*idx)+','+(by+30*idx)+','+(bz+30*idx)+')');
+					$this.css('-webkit-transform','rotateX('+(bx+30*idx)+'deg) rotateY('+(by+30*idx)+'deg) rotateZ('+(bz+30*idx)+'deg)');
+				});
+				bx = (bx+1)%360;
+				by = (by+2)%360;
+				bz = (bz+3)%360;
+				window.webkitRequestAnimationFrame(mi2);
+			}
+			//window.ontouchmove = function(e) { e.preventDefault(); };
+			//window.ontouchstart = window.ontouchmove = window.onkeydown = window.onmousedown = window.onmousemove = window.ondevicemotion = window.ondeviceorientation = mi;
+			function mi() {
+				var mi = $('<div>미</div>').css({
+					webkitTransition:'-webkit-transform 1s',
+                    MozTransition:'-moz-transform 1s',
+					position:'absolute',
+					top:'50%',
+					left:'50%'
+				});
+				var x = Math.random()*window.innerWidth/2-window.innerWidth/4;
+				var y = Math.random()*window.innerHeight/2-window.innerHeight/4;
+				var z = 0;//e.tipPosition[2]//Math.random()*500-250;
+				var scale = Math.random()*5+1;
+				var rotateX = Math.random()*180+45;
+				var rotateY = Math.random()*180+45;
+				var rotateZ = Math.random()*180+45;
+				//mi.css('margin-top',-mi.height()/2+'px');
+				//mi.css('margin-left',-mi.width()/2+'px');
+				mi.css('-webkit-transform','scale3d(1,1,1) translate3d(0px,0px,0px) rotateX(0deg) rotateY(0deg) rotateZ(0deg)');
+				mi.css('-moz-transform','scale3d(1,1,1) translate3d(0px,0px,0px) rotateX(0deg) rotateY(0deg) rotateZ(0deg)');
+				var n = parseInt(Math.random()*$('ul li').length+1);
+				mi.appendTo('ul li:nth-child('+n+')');
+/*
+				x += e.direction[0]*100;
+				y += e.direction[1]*100;
+				z += e.direction[2]*100;
+*/
+				setTimeout(function() {
+					mi.css('-webkit-transform','scale3d('+scale+','+scale+',1) translate3d('+x+'px,'+y+'px,'+z+'px) rotateX('+rotateX+'deg) rotateY('+rotateY+'deg) rotateZ('+rotateZ+'deg)');
+					mi.css('-moz-transform','scale3d('+scale+','+scale+',1) translate3d('+x+'px,'+y+'px,'+z+'px) rotateX('+rotateX+'deg) rotateY('+rotateY+'deg) rotateZ('+rotateZ+'deg)');
+				},100);
+				try {
+					var s = c.createBufferSource();
+					s.buffer = buf;
+					s.connect(c.destination);
+					s.noteOn(0);
+				} catch(e) {}
+				
+				var divnum = $('div').length-3;
+				$('p').html(divnum+' objects<br />'+cur+' FPS');
+				if(fps.length>300)
+					fps.shift();
+				fps.push([divnum,cur]);
+				//opt.
+				Flotr.draw(p,[fps],opt);
+				//$('span').html(fps+'fps');
+				//return e.preventDefault();
+			};
+		</script>
+	</head>
+	<body>
+		<div id="social">
+			<iframe src="//www.facebook.com/plugins/like.php?href=http%3A%2F%2Flog2-hwan.github.com%2Fmimark&amp;send=false&amp;layout=button_count&amp;width=100&amp;show_faces=false&amp;font&amp;colorscheme=dark&amp;action=like&amp;height=21" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:100px; height:21px;" allowTransparency="true"></iframe>
+			<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://log2-hwan.github.com/mimark" data-text="MiMARK '13" data-via="log2_hwan" data-lang="ko">트윗하기</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+		</div>
+		<div id="splash"></div>
+		<div id="logo">MiMark</div>
+		<p id="counter"></p>
+		<section id="info">
+			<div id='fps'></div>
+		</section>
+		<ul>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+		</ul>
+	</body>
+</html>

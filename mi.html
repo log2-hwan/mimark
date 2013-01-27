@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Mi chin geot gattayo</title>
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<script src="http://code.jquery.com/jquery-latest.js"></script>
+		<script>
+			var c, buf;
+			window.onload = function() {
+				try { 
+					c = new webkitAudioContext(); 
+					var xhr = new XMLHttpRequest();
+					xhr.responseType = 'arraybuffer';
+					xhr.open('GET','mi.wav',true);
+					xhr.onload = function() {
+						buf = c.createBuffer(xhr.response,false);
+					};
+					xhr.send();
+				} catch(e) {}
+			};
+			//window.ontouchmove = function(e) { e.preventDefault(); };
+			window.ontouchstart = window.ontouchmove = window.onkeydown = window.onmousedown = window.onmousemove = mi;
+			function mi(e) {
+				var mi = $('<div>미</div>').css({
+					webkitTransition:'-webkit-transform 1s',
+                    MozTransition:'-moz-transform 1s',
+					position:'absolute',
+					top:'50%',
+					left:'50%'
+				});
+				var x = Math.random()*window.innerWidth/2-window.innerWidth/4;
+				var y = Math.random()*window.innerHeight/2-window.innerHeight/4;
+				var scale = Math.random()*5+1;
+				var rotate = Math.random()*180+45;
+				mi.css('margin-top',-mi.height());
+				mi.css('margin-left',-mi.width());
+				mi.css('-webkit-transform','scale3d(1,1,1) translate3d(0px,0px,0px) rotateZ(0deg)');
+				mi.css('-moz-transform','scale3d(1,1,1) translate3d(0px,0px,0px) rotateZ(0deg)');
+				mi.appendTo('body');
+				setTimeout(function() {
+					mi.css('-webkit-transform','scale3d('+scale+','+scale+',1) translate3d('+x+'px,'+y+'px,0px) rotateZ('+rotate+'deg)');
+					mi.css('-moz-transform','scale3d('+scale+','+scale+',1) translate3d('+x+'px,'+y+'px,0px) rotateZ('+rotate+'deg)');
+				},100);
+				try {
+					var s = c.createBufferSource();
+					s.buffer = buf;
+					s.connect(c.destination);
+					s.noteOn(0);
+				} catch(e) {}
+				
+				return e.preventDefault();
+			};
+		</script>
+	</head>
+	<body>
+	</body>
+</html>
