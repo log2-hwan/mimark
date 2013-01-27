@@ -8,7 +8,9 @@
 		<script src="flotr2.min.js"></script>
 		<script src="http://code.jquery.com/jquery-latest.js"></script>
 		<style>
-		* {
+		* {	
+			perspective-origin: 0 0 0;
+			perspective: 1000;
 			-webkit-perspective-origin: 0 0 0;
 			-webkit-perspective: 1000;
 		}
@@ -80,6 +82,7 @@
 			background: url('mimark_bg.jpg') no-repeat;
 			background-size: cover;
 			opacity: 0;
+			transition: opacity 2s;
 			-webkit-transition: opacity 2s;
 			z-index: 99998;
 		}
@@ -88,6 +91,34 @@
 			var c, buf, bx = 0, by = 0, bz = 0, t, fps = [], s, p, opt, cur;
 			window.onload = function() {
 				$('#splash').css('opacity',1);
+				setTimeout(function() {
+					$('#splash').css('opacity',0).bind('transitionEnd',function() {					
+						try { 
+							c = new AudioContext(); 
+							var xhr = new XMLHttpRequest();
+							xhr.responseType = 'arraybuffer';
+							xhr.open('GET','mi.wav',true);
+							xhr.onload = function() {
+								buf = c.createBuffer(xhr.response,false);
+							};
+							xhr.send();
+						} catch(e) {}
+						setInterval(mi,50);
+						s = Date.now();
+						p = document.getElementById('fps');
+						p.style.width = (window.innerWidth-20)+'px';
+						p.style.height = '200px';
+						opt = {
+							yaxis : {
+								max : 120,
+								min : 0
+							}
+						};
+						window.requestAnimationFrame(mi2);
+						window.webkitRequestAnimationFrame(mi2);
+						window.mozRequestAnimationFrame(mi2);
+					});
+				},2000);
 				setTimeout(function() {
 					$('#splash').css('opacity',0).bind('webkitTransitionEnd',function() {					
 						try { 
@@ -113,7 +144,7 @@
 						};
 						window.webkitRequestAnimationFrame(mi2);
 					});
-				},2000)
+				},2000);
 			};
 			
 			function mi2(fingers) {
@@ -125,19 +156,22 @@
 					var $this = $(this);
 					var idx = $('ul li').index(this);
 					//$this.css('color','rgb('+(bx+30*idx)+','+(by+30*idx)+','+(bz+30*idx)+')');
+					$this.css('transform','rotateX('+(bx+30*idx)+'deg) rotateY('+(by+30*idx)+'deg) rotateZ('+(bz+30*idx)+'deg)');
 					$this.css('-webkit-transform','rotateX('+(bx+30*idx)+'deg) rotateY('+(by+30*idx)+'deg) rotateZ('+(bz+30*idx)+'deg)');
 				});
 				bx = (bx+1)%360;
 				by = (by+2)%360;
 				bz = (bz+3)%360;
+				window.requestAnimationFrame(mi2);
 				window.webkitRequestAnimationFrame(mi2);
+				window.mozRequestAnimationFrame(mi2);
 			}
 			//window.ontouchmove = function(e) { e.preventDefault(); };
 			//window.ontouchstart = window.ontouchmove = window.onkeydown = window.onmousedown = window.onmousemove = window.ondevicemotion = window.ondeviceorientation = mi;
 			function mi() {
 				var mi = $('<div>미</div>').css({
+					transition:'transform 1s',
 					webkitTransition:'-webkit-transform 1s',
-                    MozTransition:'-moz-transform 1s',
 					position:'absolute',
 					top:'50%',
 					left:'50%'
@@ -151,8 +185,8 @@
 				var rotateZ = Math.random()*180+45;
 				//mi.css('margin-top',-mi.height()/2+'px');
 				//mi.css('margin-left',-mi.width()/2+'px');
+				mi.css('transform','scale3d(1,1,1) translate3d(0px,0px,0px) rotateX(0deg) rotateY(0deg) rotateZ(0deg)');
 				mi.css('-webkit-transform','scale3d(1,1,1) translate3d(0px,0px,0px) rotateX(0deg) rotateY(0deg) rotateZ(0deg)');
-				mi.css('-moz-transform','scale3d(1,1,1) translate3d(0px,0px,0px) rotateX(0deg) rotateY(0deg) rotateZ(0deg)');
 				var n = parseInt(Math.random()*$('ul li').length+1);
 				mi.appendTo('ul li:nth-child('+n+')');
 /*
@@ -161,8 +195,8 @@
 				z += e.direction[2]*100;
 */
 				setTimeout(function() {
+					mi.css('transform','scale3d('+scale+','+scale+',1) translate3d('+x+'px,'+y+'px,'+z+'px) rotateX('+rotateX+'deg) rotateY('+rotateY+'deg) rotateZ('+rotateZ+'deg)');
 					mi.css('-webkit-transform','scale3d('+scale+','+scale+',1) translate3d('+x+'px,'+y+'px,'+z+'px) rotateX('+rotateX+'deg) rotateY('+rotateY+'deg) rotateZ('+rotateZ+'deg)');
-					mi.css('-moz-transform','scale3d('+scale+','+scale+',1) translate3d('+x+'px,'+y+'px,'+z+'px) rotateX('+rotateX+'deg) rotateY('+rotateY+'deg) rotateZ('+rotateZ+'deg)');
 				},100);
 				try {
 					var s = c.createBufferSource();
