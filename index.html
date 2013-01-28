@@ -239,9 +239,6 @@
 				if(fps.length>300)
 					fps.shift();
 				fps.push([divnum,cur]);
-				fps.sort(function(a,b) {
-					return a[0]-b[0];
-				});
 				//opt.
 				Flotr.draw(p,[fps],opt);
 				//$('span').html(fps+'fps');
