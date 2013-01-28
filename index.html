@@ -191,15 +191,7 @@
 			//window.ontouchmove = function(e) { e.preventDefault(); };
 			//window.ontouchstart = window.ontouchmove = window.onkeydown = window.onmousedown = window.onmousemove = window.ondevicemotion = window.ondeviceorientation = mi;
 			function mi() {
-				var mi = $('<div class="mi">미</div>').css({
-					webkitTransition:'-webkit-transform 1s',
-					MozTransition:'-moz-transform 1s',
-					oTransition:'-o-transform 1s',
-					transition:'transform 1s',
-					position:'absolute',
-					top:'50%',
-					left:'50%'
-				});
+				var mi = $('<div class="mi">미</div>');
 				var x = Math.random()*window.innerWidth/2-window.innerWidth/4;
 				var y = Math.random()*window.innerHeight/2-window.innerHeight/4;
 				var z = Math.random()*500-250;
