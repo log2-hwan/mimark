@@ -114,6 +114,7 @@
 			left: 50%;
 			-webkit-transform: scale3d(1,1,1) translate3d(0px,0px,0px) rotateX(0deg) rotateY(0deg) rotateZ(0deg);
 			-moz-transform: scale3d(1,1,1) translate3d(0px,0px,0px) rotateX(0deg) rotateY(0deg) rotateZ(0deg);
+			-ms-transform: scale3d(1,1,1) translate3d(0px,0px,0px) rotateX(0deg) rotateY(0deg) rotateZ(0deg);
 			-o-transform: scale3d(1,1,1) translate3d(0px,0px,0px) rotateX(0deg) rotateY(0deg) rotateZ(0deg);
 			transform: scale3d(1,1,1) translate3d(0px,0px,0px) rotateX(0deg) rotateY(0deg) rotateZ(0deg);
 		}
@@ -145,10 +146,10 @@
 							xhr.responseType = 'arraybuffer';
 							xhr.onload = function() {
 								buf = c.createBuffer(xhr.response,false);
+								setInterval(mi,50);
 							};
 							xhr.send();
 						} catch(e) {}
-						setInterval(mi,50);
 						s = Date.now();
 						p = document.getElementById('fps');
 						p.style.width = (window.innerWidth-20)+'px';
