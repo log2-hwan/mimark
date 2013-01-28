@@ -176,8 +176,9 @@
 			//window.ontouchstart = window.ontouchmove = window.onkeydown = window.onmousedown = window.onmousemove = window.ondevicemotion = window.ondeviceorientation = mi;
 			function mi() {
 				var mi = $('<div>미</div>').css({
+					transition:'transform 1s',
 					webkitTransition:'-webkit-transform 1s',
-                    MozTransition:'-moz-transform 1s',
+                    			MozTransition:'-moz-transform 1s',
 					position:'absolute',
 					top:'50%',
 					left:'50%'
