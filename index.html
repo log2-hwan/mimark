@@ -32,6 +32,18 @@
 			z-index: 99999;
 		}
 		
+		#ex {
+			position: absolute;
+			top: 80px;
+			left: 20px;
+			z-index: -9999;
+			color: #ccc;
+			font-family: "Helvetica Neue", "Helvetica", Arial, sans-serif;
+			font-weight: 700;
+			font-size: 20px;
+			line-height: 25px;
+		}
+		
 		#logo {
 			position: absolute;
 			top: 20px;
@@ -65,6 +77,9 @@
 		li {
 			font-family: "Apple SD Gothic Neo", "AppleSDGothicNeo", "SDGothicNeo1", "Malgun Gothic", "NanumGothic", "Gulim", sans-serif;
 			color: #ccc;
+			transform-style: preserve-3d;
+			-moz-transform-style: preserve-3d;
+			-webkit-transform-style: preserve-3d;
 		}
 		#fps {
 			width: 300px;
@@ -91,11 +106,21 @@
 		}
 		</style>
 		<script>
-			var c, buf, bx = 0, by = 0, bz = 0, t, fps = [], s, p, opt, cur;
+			var c, buf, bx = 0, by = 0, bz = 0, t, fps = [], s, p, opt, cur, lis, isEx = false;
 			window.onload = function() {
 				window.AudioContext = window.AudioContext || window.webkitAudioContext || window.MozAudioContext;
 				window.requestAnimationFrame = window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame;
+				$('input').change(function() {
+					isEx = !isEx;
+					var tstyle = isEx?'preserve-3d':'flat';
+					$('li').css({
+						webkitTransformStyle:tstyle,
+						MozTransformStyle:tstyle,
+						transformStyle:tstyle
+					});
+				});
 				$('#splash').css('opacity',1);
+				lis = $('ul li');
 				setTimeout(function() {
 					$('#splash').css('opacity',0);
 					setTimeout(function() {					
@@ -138,7 +163,8 @@
 					$this.css({
 						webkitTransform:rot,
 						MozTransform:rot,
-						transform:rot
+						transform:rot,
+						color:(isEx)?'rgb('+(bx+15*idx)%255+','+(by+15*idx)%255+','+(bz+15*idx)%255+')':'#ccc'
 					});
 				});
 				bx = (bx+1)%360;
@@ -158,7 +184,7 @@
 				});
 				var x = Math.random()*window.innerWidth/2-window.innerWidth/4;
 				var y = Math.random()*window.innerHeight/2-window.innerHeight/4;
-				var z = 0;//e.tipPosition[2]//Math.random()*500-250;
+				var z = Math.random()*500-250;
 				var scale = Math.random()*5+1;
 				var rotateX = Math.random()*180+45;
 				var rotateY = Math.random()*180+45;
@@ -171,8 +197,9 @@
 					MozTransform:ori,
 					transform:ori
 				});
-				var n = parseInt(Math.random()*$('ul li').length+1);
-				mi.appendTo('ul li:nth-child('+n+')');
+				var n = parseInt(Math.random()*lis.length);
+				lis[n].appendChild(mi[0]);
+				//mi.appendTo('ul li:nth-child('+n+')');
 /*
 				x += e.direction[0]*100;
 				y += e.direction[1]*100;
@@ -193,11 +220,14 @@
 					s.noteOn(0);
 				} catch(e) {}
 				
-				var divnum = $('div').length-3;
-				$('p').html(divnum+' objects<br />'+cur+' FPS');
+				var divnum = $('div').length-5;
+				$('p').html(divnum+' mi<br />'+cur+' FPS');
 				if(fps.length>300)
 					fps.shift();
 				fps.push([divnum,cur]);
+				fps.sort(function(a,b) {
+					return a[0]-b[0];
+				});
 				//opt.
 				Flotr.draw(p,[fps],opt);
 				//$('span').html(fps+'fps');
@@ -214,6 +244,7 @@
 		<div id="splash"></div>
 		<div id="logo">MiMark</div>
 		<p id="counter"></p>
+		<div id="ex">Extreme Mode: <input type="checkbox"/></div>
 		<section id="info">
 			<div id='fps'></div>
 		</section>
