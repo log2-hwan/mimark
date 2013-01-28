@@ -9,14 +9,12 @@
 		<script src="http://code.jquery.com/jquery-latest.js"></script>
 		<style>
 		* {
-			perspective: 1000;
-			perspective-origin: 0 0 0;
+			perspective: 1000px;
+			perspective-origin: 0px 0px 0px;
 			-o-perspective: 1000;
 			-o-perspective-origin: 0 0 0;
-			-ms-perspective: 1000;
-			-ms-perspective-origin: 0 0 0;
-			-moz-perspective-origin: 0 0 0;
-			-moz-perspective: 1000;
+			-moz-perspective-origin: 0px 0px 0px;
+			-moz-perspective: 1000px;
 			-webkit-perspective-origin: 0 0 0;
 			-webkit-perspective: 1000;
 		}
@@ -104,22 +102,20 @@
 			-moz-transition: opacity 2s;
 			-webkit-transition: opacity 2s;
 			-o-transition: opacity 2s;
-			-ms-transition: opacity 2s;
 			z-index: 99998;
 		}
 		</style>
 		<script>
 			var c, buf, bx = 0, by = 0, bz = 0, t, fps = [], s, p, opt, cur, lis, isEx = false;
 			window.onload = function() {
-				window.AudioContext = window.AudioContext || window.webkitAudioContext || window.MozAudioContext;
-				window.requestAnimationFrame = window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.msRequestAnimationFrame;
+				window.AudioContext = window.AudioContext || window.webkitAudioContext;// || window.mozAudioContext; Firefox directly added AudioContext without prefix starting Firefox Nightly 21. Firefox stable version never have supported it with or without the prefix.
+				window.requestAnimationFrame = window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame;
 				$('input').click(function() {
 					isEx = !isEx;
 					var tstyle = isEx?'preserve-3d':'flat';
 					$('li').css({
 						webkitTransformStyle:tstyle,
 						MozTransformStyle:tstyle,
-						msTransformStyle:tstyle,
 						oTransformStyle:tstyle,
 						transformStyle:tstyle
 					});
@@ -184,8 +180,7 @@
 			function mi() {
 				var mi = $('<div>미</div>').css({
 					webkitTransition:'-webkit-transform 1s',
-                    MozTransition:'-moz-transform 1s',                    
-					msTransition:'-ms-transform 1s',
+					MozTransition:'-moz-transform 1s',
 					oTransition:'-o-transform 1s',
 					transition:'transform 1s',
 					position:'absolute',
@@ -204,7 +199,7 @@
 				var ori = 'scale3d(1,1,1) translate3d(0px,0px,0px) rotateX(0deg) rotateY(0deg) rotateZ(0deg)';
 				mi.css({
 					webkitTransform:ori,
-					MozTransform:ori,					
+					MozTransform:ori,
 					msTransform:ori,
 					oTransform:ori,
 					transform:ori
