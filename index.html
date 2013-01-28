@@ -141,8 +141,8 @@
 						try { 
 							c = new AudioContext(); 
 							var xhr = new XMLHttpRequest();
-							xhr.responseType = 'arraybuffer';
 							xhr.open('GET','mi.wav',true);
+							xhr.responseType = 'arraybuffer';
 							xhr.onload = function() {
 								buf = c.createBuffer(xhr.response,false);
 							};
