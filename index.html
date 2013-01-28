@@ -36,7 +36,7 @@
 			position: absolute;
 			top: 80px;
 			left: 20px;
-			z-index: -9999;
+			z-index: 9999;
 			color: #ccc;
 			font-family: "Helvetica Neue", "Helvetica", Arial, sans-serif;
 			font-weight: 700;
@@ -110,7 +110,7 @@
 			window.onload = function() {
 				window.AudioContext = window.AudioContext || window.webkitAudioContext || window.MozAudioContext;
 				window.requestAnimationFrame = window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame;
-				$('input').change(function() {
+				$('input').click(function() {
 					isEx = !isEx;
 					var tstyle = isEx?'preserve-3d':'flat';
 					$('li').css({
