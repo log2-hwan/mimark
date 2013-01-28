@@ -11,6 +11,10 @@
 		* {
 			perspective: 1000;
 			perspective-origin: 0 0 0;
+			-o-perspective: 1000;
+			-o-perspective-origin: 0 0 0;
+			-ms-perspective: 1000;
+			-ms-perspective-origin: 0 0 0;
 			-moz-perspective-origin: 0 0 0;
 			-moz-perspective: 1000;
 			-webkit-perspective-origin: 0 0 0;
@@ -77,9 +81,6 @@
 		li {
 			font-family: "Apple SD Gothic Neo", "AppleSDGothicNeo", "SDGothicNeo1", "Malgun Gothic", "NanumGothic", "Gulim", sans-serif;
 			color: #ccc;
-			transform-style: preserve-3d;
-			-moz-transform-style: preserve-3d;
-			-webkit-transform-style: preserve-3d;
 		}
 		#fps {
 			width: 300px;
@@ -102,6 +103,8 @@
 			transition: opacity 2s;
 			-moz-transition: opacity 2s;
 			-webkit-transition: opacity 2s;
+			-o-transition: opacity 2s;
+			-ms-transition: opacity 2s;
 			z-index: 99998;
 		}
 		</style>
@@ -109,13 +112,15 @@
 			var c, buf, bx = 0, by = 0, bz = 0, t, fps = [], s, p, opt, cur, lis, isEx = false;
 			window.onload = function() {
 				window.AudioContext = window.AudioContext || window.webkitAudioContext || window.MozAudioContext;
-				window.requestAnimationFrame = window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame;
+				window.requestAnimationFrame = window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.msRequestAnimationFrame;
 				$('input').click(function() {
 					isEx = !isEx;
 					var tstyle = isEx?'preserve-3d':'flat';
 					$('li').css({
 						webkitTransformStyle:tstyle,
 						MozTransformStyle:tstyle,
+						msTransformStyle:tstyle,
+						oTransformStyle:tstyle,
 						transformStyle:tstyle
 					});
 				});
@@ -163,6 +168,8 @@
 					$this.css({
 						webkitTransform:rot,
 						MozTransform:rot,
+						msTransform:rot,
+						oTransform:rot,
 						transform:rot,
 						color:(isEx)?'rgb('+(bx+15*idx)%255+','+(by+15*idx)%255+','+(bz+15*idx)%255+')':'#ccc'
 					});
@@ -177,7 +184,10 @@
 			function mi() {
 				var mi = $('<div>미</div>').css({
 					webkitTransition:'-webkit-transform 1s',
-                    MozTransition:'-moz-transform 1s',
+                    MozTransition:'-moz-transform 1s',                    
+					msTransition:'-ms-transform 1s',
+					oTransition:'-o-transform 1s',
+					transition:'transform 1s',
 					position:'absolute',
 					top:'50%',
 					left:'50%'
@@ -194,7 +204,9 @@
 				var ori = 'scale3d(1,1,1) translate3d(0px,0px,0px) rotateX(0deg) rotateY(0deg) rotateZ(0deg)';
 				mi.css({
 					webkitTransform:ori,
-					MozTransform:ori,
+					MozTransform:ori,					
+					msTransform:ori,
+					oTransform:ori,
 					transform:ori
 				});
 				var n = parseInt(Math.random()*lis.length);
@@ -210,6 +222,8 @@
 					mi.css({
 						webkitTransform:transform,
 						MozTransform:transform,
+						msTransform:transform,
+						oTransform:transform,
 						transform:transform
 					});
 				},100);
