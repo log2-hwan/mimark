@@ -225,7 +225,7 @@
 					var s = c.createBufferSource();
 					s.buffer = buf;
 					s.connect(c.destination);
-					s.start(0);
+					if (s.start) s.start(0); else s.noteOn(0);
 				} catch(e) {}
 				
 				var divnum = $('div').length-5;
