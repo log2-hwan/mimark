@@ -104,6 +104,19 @@
 			-o-transition: opacity 2s;
 			z-index: 99998;
 		}
+		div.mi {
+			-webkit-transition: -webkit-transform 1s;
+			-moz-transition: -moz-transform 1s;
+			-o-transition: -o-transform 1s;
+			transition: transform 1s;
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			-webkit-transform: scale3d(1,1,1) translate3d(0px,0px,0px) rotateX(0deg) rotateY(0deg) rotateZ(0deg);
+			-moz-transform: scale3d(1,1,1) translate3d(0px,0px,0px) rotateX(0deg) rotateY(0deg) rotateZ(0deg);
+			-o-transform: scale3d(1,1,1) translate3d(0px,0px,0px) rotateX(0deg) rotateY(0deg) rotateZ(0deg);
+			transform: scale3d(1,1,1) translate3d(0px,0px,0px) rotateX(0deg) rotateY(0deg) rotateZ(0deg);
+		}
 		</style>
 		<script>
 			var c, buf, bx = 0, by = 0, bz = 0, t, fps = [], s, p, opt, cur, lis, isEx = false;
@@ -178,7 +191,7 @@
 			//window.ontouchmove = function(e) { e.preventDefault(); };
 			//window.ontouchstart = window.ontouchmove = window.onkeydown = window.onmousedown = window.onmousemove = window.ondevicemotion = window.ondeviceorientation = mi;
 			function mi() {
-				var mi = $('<div>미</div>').css({
+				var mi = $('<div class="mi">미</div>').css({
 					webkitTransition:'-webkit-transform 1s',
 					MozTransition:'-moz-transform 1s',
 					oTransition:'-o-transform 1s',
@@ -196,14 +209,6 @@
 				var rotateZ = Math.random()*180+45;
 				//mi.css('margin-top',-mi.height()/2+'px');
 				//mi.css('margin-left',-mi.width()/2+'px');
-				var ori = 'scale3d(1,1,1) translate3d(0px,0px,0px) rotateX(0deg) rotateY(0deg) rotateZ(0deg)';
-				mi.css({
-					webkitTransform:ori,
-					MozTransform:ori,
-					msTransform:ori,
-					oTransform:ori,
-					transform:ori
-				});
 				var n = parseInt(Math.random()*lis.length);
 				lis[n].appendChild(mi[0]);
 				//mi.appendTo('ul li:nth-child('+n+')');
