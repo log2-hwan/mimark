@@ -10,10 +10,10 @@
 		<style>
 		* {
 			perspective: 1000px;
-			perspective-origin: 0px 0px 0px;
+			perspective-origin: 0px 0px;
 			-o-perspective: 1000;
 			-o-perspective-origin: 0 0 0;
-			-moz-perspective-origin: 0px 0px 0px;
+			-moz-perspective-origin: 0px 0px;
 			-moz-perspective: 1000px;
 			-webkit-perspective-origin: 0 0 0;
 			-webkit-perspective: 1000;
@@ -24,6 +24,7 @@
 			width: 100%;
 			height: 100%;
 			background: #222;
+			overflow: hidden;
 		}
 		
 		#social {
@@ -102,7 +103,7 @@
 			-moz-transition: opacity 2s;
 			-webkit-transition: opacity 2s;
 			-o-transition: opacity 2s;
-			z-index: 99998;
+			z-index: 9998;
 		}
 		div.mi {
 			-webkit-transition: -webkit-transform 1s;
@@ -226,7 +227,7 @@
 					var s = c.createBufferSource();
 					s.buffer = buf;
 					s.connect(c.destination);
-					s.noteOn(0);
+					if (s.start) s.start(0); else s.noteOn(0);
 				} catch(e) {}
 				
 				var divnum = $('div').length-5;
