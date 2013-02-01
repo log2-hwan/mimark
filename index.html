@@ -122,6 +122,7 @@
 		<script>
 			var c, buf, bx = 0, by = 0, bz = 0, t, fps = [], s, p, opt, cur, lis, isEx = false;
 			window.onload = function() {
+				window.onmousemove = function(e) { e.preventDefault(); };
 				window.AudioContext = window.AudioContext || window.webkitAudioContext;// || window.mozAudioContext; Firefox directly added AudioContext without prefix starting Firefox Nightly 21. Firefox stable version never have supported it with or without the prefix.
 				window.requestAnimationFrame = window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame;
 				$('input').click(function() {
@@ -138,7 +139,8 @@
 				lis = $('ul li');
 				setTimeout(function() {
 					$('#splash').css('opacity',0);
-					setTimeout(function() {					
+					setTimeout(function() {	
+						$('#splash').remove();		
 						try { 
 							c = new AudioContext(); 
 							var xhr = new XMLHttpRequest();
