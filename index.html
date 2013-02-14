@@ -125,7 +125,7 @@
 			var adAudio;
 			window.AudioContext = window.AudioContext || window.webkitAudioContext;// || window.mozAudioContext; Firefox directly added AudioContext without prefix starting Firefox Nightly 21. Firefox stable version never have supported it with or without the prefix.
 			if (window.AudioContext) waContext = new AudioContext();//Web Audio API checking
-			else { var a = new Audio(); if (a.mozWriteAudio) { a.mozSetup(2, 44100); adAudio = a; } }//Audio Data API checking
+			else { var a = new Audio(); if (a.mozWriteAudio) { a.mozSetup(1, 22050); adAudio = a; } }//Audio Data API checking
 			window.onload = function() {
 				window.onmousemove = function(e) { e.preventDefault(); };
 				
@@ -153,7 +153,7 @@
 							xhr.onreadystatechange = function() {
 								if (this.readyState == 4) {
 									if (waContext) buf = waContext.createBuffer(this.response,false);
-									else if (adAudio) buf = new Float32Array(this.response, 44, (this.response.byteLength - 44) / 4);
+									else if (adAudio) buf = new Float32Array(new Int16Array(this.response, 44, (this.response.byteLength - 44) / 2);
 								}
 							};
 							xhr.send();
