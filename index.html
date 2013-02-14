@@ -127,7 +127,7 @@
 			if (window.AudioContext) waContext = new AudioContext();
 			else {
 				var a = new Audio();
-				if (a.mozWriteAudio) adAudio = new Audio();
+				if (a.mozWriteAudio) adAudio = a;
 			}
 			window.onload = function() {
 				window.onmousemove = function(e) { e.preventDefault(); };
