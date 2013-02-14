@@ -153,7 +153,10 @@
 							xhr.onreadystatechange = function() {
 								if (this.readyState == 4) {
 									if (waContext) buf = waContext.createBuffer(this.response,false);
-									else if (adAudio) buf = new Float32Array(new Int16Array(this.response, 44, (this.response.byteLength - 44) / 2));
+									else if (adAudio) {
+										buf = new Float32Array(new Int16Array(this.response, 44, (this.response.byteLength - 44) / 2));
+										for (var i = 0; i < buf.length; i++) buf /= 32768;
+									}
 								}
 							};
 							xhr.send();
