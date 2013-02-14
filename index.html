@@ -154,14 +154,9 @@
 							xhr.open('GET','mi.wav',true);
 							xhr.responseType = 'arraybuffer';
 							xhr.onload = function() {
-								if (waContext) buf = waContext.createBuffer(xhr.response,false);
-								else if (adAudio) {
-									try {
-										var buffer = xhr.response;
-										buf = new Float32Array(xhr.response, 0);
-									}
-									catch (e) {
-									}
+								if (xhr.readyState == 4) {					
+									if (waContext) buf = waContext.createBuffer(xhr.response,false);
+									else if (adAudio) buf = new Float32Array(xhr.response);
 								}
 							};
 							xhr.send();
