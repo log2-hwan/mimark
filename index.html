@@ -155,7 +155,14 @@
 							xhr.responseType = 'arraybuffer';
 							xhr.onload = function() {
 								if (waContext) buf = waContext.createBuffer(xhr.response,false);
-								else if (adAudio) buf = new Float32Array(xhr.response, 0);
+								else if (adAudio) {
+									try {
+										var buffer = xhr.response;
+										buf = new Float32Array(xhr.response, 0);
+									}
+									catch (e) {
+									}
+								}
 							};
 							xhr.send();
 						}
