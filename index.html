@@ -9,8 +9,14 @@
 		<script src="http://code.jquery.com/jquery-latest.js"></script>
 		<style>
 		* {
-			-webkit-perspective-origin: 0 0 0;
-			-webkit-perspective: 1000;
+			perspective: 1000px;
+			perspective-origin: 0 0;
+			-o-perspective: 1000px;
+			-o-perspective-origin: 0 0;
+			-moz-perspective: 1000px;
+			-moz-perspective-origin: 0 0;
+			-webkit-perspective: 1000px;
+			-webkit-perspective-origin: 0 0;
 		}
 		html, body {
 			margin: 0;
@@ -18,6 +24,7 @@
 			width: 100%;
 			height: 100%;
 			background: #222;
+			overflow: hidden;
 		}
 		
 		#social {
@@ -26,6 +33,18 @@
 			top: 100px;
 			right: 0px;
 			z-index: 99999;
+		}
+		
+		#ex {
+			position: absolute;
+			top: 80px;
+			left: 20px;
+			z-index: 9999;
+			color: #ccc;
+			font-family: "Helvetica Neue", "Helvetica", Arial, sans-serif;
+			font-weight: 700;
+			font-size: 20px;
+			line-height: 25px;
 		}
 		
 		#logo {
@@ -80,21 +99,54 @@
 			background: url('mimark_bg.jpg') no-repeat;
 			background-size: cover;
 			opacity: 0;
+			transition: opacity 2s;
+			-moz-transition: opacity 2s;
 			-webkit-transition: opacity 2s;
-			z-index: 99998;
+			-o-transition: opacity 2s;
+			z-index: 9998;
+		}
+		div.mi {
+			-webkit-transition: -webkit-transform 1s;
+			-moz-transition: -moz-transform 1s;
+			-o-transition: -o-transform 1s;
+			transition: transform 1s;
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			-webkit-transform: scale3d(1,1,1) translate3d(0px,0px,0px) rotateX(0deg) rotateY(0deg) rotateZ(0deg);
+			-moz-transform: scale3d(1,1,1) translate3d(0px,0px,0px) rotateX(0deg) rotateY(0deg) rotateZ(0deg);
+			-ms-transform: scale3d(1,1,1) translate3d(0px,0px,0px) rotateX(0deg) rotateY(0deg) rotateZ(0deg);
+			-o-transform: scale3d(1,1,1) translate3d(0px,0px,0px) rotateX(0deg) rotateY(0deg) rotateZ(0deg);
+			transform: scale3d(1,1,1) translate3d(0px,0px,0px) rotateX(0deg) rotateY(0deg) rotateZ(0deg);
 		}
 		</style>
 		<script>
-			var c, buf, bx = 0, by = 0, bz = 0, t, fps = [], s, p, opt, cur;
+			var c, buf, bx = 0, by = 0, bz = 0, t, fps = [], s, p, opt, cur, lis, isEx = false;
 			window.onload = function() {
+				window.onmousemove = function(e) { e.preventDefault(); };
+				window.AudioContext = window.AudioContext || window.webkitAudioContext;// || window.mozAudioContext; Firefox directly added AudioContext without prefix starting Firefox Nightly 21. Firefox stable version never have supported it with or without the prefix.
+				window.requestAnimationFrame = window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame;
+				$('input').click(function() {
+					isEx = !isEx;
+					var tstyle = isEx?'preserve-3d':'flat';
+					$('li').css({
+						webkitTransformStyle:tstyle,
+						MozTransformStyle:tstyle,
+						oTransformStyle:tstyle,
+						transformStyle:tstyle
+					});
+				});
 				$('#splash').css('opacity',1);
+				lis = $('ul li');
 				setTimeout(function() {
-					$('#splash').css('opacity',0).bind('webkitTransitionEnd',function() {					
+					$('#splash').css('opacity',0);
+					setTimeout(function() {	
+						$('#splash').remove();		
 						try { 
-							c = new webkitAudioContext(); 
+							c = new AudioContext(); 
 							var xhr = new XMLHttpRequest();
-							xhr.responseType = 'arraybuffer';
 							xhr.open('GET','mi.wav',true);
+							xhr.responseType = 'arraybuffer';
 							xhr.onload = function() {
 								buf = c.createBuffer(xhr.response,false);
 							};
@@ -111,8 +163,8 @@
 								min : 0
 							}
 						};
-						window.webkitRequestAnimationFrame(mi2);
-					});
+						window.requestAnimationFrame(mi2);
+					},2000);
 				},2000)
 			};
 			
@@ -125,54 +177,61 @@
 					var $this = $(this);
 					var idx = $('ul li').index(this);
 					//$this.css('color','rgb('+(bx+30*idx)+','+(by+30*idx)+','+(bz+30*idx)+')');
-					$this.css('-webkit-transform','rotateX('+(bx+30*idx)+'deg) rotateY('+(by+30*idx)+'deg) rotateZ('+(bz+30*idx)+'deg)');
+					var rot ='rotateX('+(bx+30*idx)+'deg) rotateY('+(by+30*idx)+'deg) rotateZ('+(bz+30*idx)+'deg)';
+					$this.css({
+						webkitTransform:rot,
+						MozTransform:rot,
+						msTransform:rot,
+						oTransform:rot,
+						transform:rot,
+						color:(isEx)?'rgb('+(bx+15*idx)%255+','+(by+15*idx)%255+','+(bz+15*idx)%255+')':'#ccc'
+					});
 				});
 				bx = (bx+1)%360;
 				by = (by+2)%360;
 				bz = (bz+3)%360;
-				window.webkitRequestAnimationFrame(mi2);
+				window.requestAnimationFrame(mi2);
 			}
 			//window.ontouchmove = function(e) { e.preventDefault(); };
 			//window.ontouchstart = window.ontouchmove = window.onkeydown = window.onmousedown = window.onmousemove = window.ondevicemotion = window.ondeviceorientation = mi;
 			function mi() {
-				var mi = $('<div>미</div>').css({
-					webkitTransition:'-webkit-transform 1s',
-                    MozTransition:'-moz-transform 1s',
-					position:'absolute',
-					top:'50%',
-					left:'50%'
-				});
+				var mi = $('<div class="mi">미</div>');
 				var x = Math.random()*window.innerWidth/2-window.innerWidth/4;
 				var y = Math.random()*window.innerHeight/2-window.innerHeight/4;
-				var z = 0;//e.tipPosition[2]//Math.random()*500-250;
+				var z = Math.random()*500-250;
 				var scale = Math.random()*5+1;
 				var rotateX = Math.random()*180+45;
 				var rotateY = Math.random()*180+45;
 				var rotateZ = Math.random()*180+45;
 				//mi.css('margin-top',-mi.height()/2+'px');
 				//mi.css('margin-left',-mi.width()/2+'px');
-				mi.css('-webkit-transform','scale3d(1,1,1) translate3d(0px,0px,0px) rotateX(0deg) rotateY(0deg) rotateZ(0deg)');
-				mi.css('-moz-transform','scale3d(1,1,1) translate3d(0px,0px,0px) rotateX(0deg) rotateY(0deg) rotateZ(0deg)');
-				var n = parseInt(Math.random()*$('ul li').length+1);
-				mi.appendTo('ul li:nth-child('+n+')');
+				var n = parseInt(Math.random()*lis.length);
+				lis[n].appendChild(mi[0]);
+				//mi.appendTo('ul li:nth-child('+n+')');
 /*
 				x += e.direction[0]*100;
 				y += e.direction[1]*100;
 				z += e.direction[2]*100;
 */
 				setTimeout(function() {
-					mi.css('-webkit-transform','scale3d('+scale+','+scale+',1) translate3d('+x+'px,'+y+'px,'+z+'px) rotateX('+rotateX+'deg) rotateY('+rotateY+'deg) rotateZ('+rotateZ+'deg)');
-					mi.css('-moz-transform','scale3d('+scale+','+scale+',1) translate3d('+x+'px,'+y+'px,'+z+'px) rotateX('+rotateX+'deg) rotateY('+rotateY+'deg) rotateZ('+rotateZ+'deg)');
+					var transform = 'scale3d('+scale+','+scale+',1) translate3d('+x+'px,'+y+'px,'+z+'px) rotateX('+rotateX+'deg) rotateY('+rotateY+'deg) rotateZ('+rotateZ+'deg)';
+					mi.css({
+						webkitTransform:transform,
+						MozTransform:transform,
+						msTransform:transform,
+						oTransform:transform,
+						transform:transform
+					});
 				},100);
 				try {
 					var s = c.createBufferSource();
 					s.buffer = buf;
 					s.connect(c.destination);
-					s.noteOn(0);
+					if (s.start) s.start(0); else s.noteOn(0);
 				} catch(e) {}
 				
-				var divnum = $('div').length-3;
-				$('p').html(divnum+' objects<br />'+cur+' FPS');
+				var divnum = $('div').length-5;
+				$('p').html(divnum+' mi<br />'+cur+' FPS');
 				if(fps.length>300)
 					fps.shift();
 				fps.push([divnum,cur]);
@@ -192,6 +251,7 @@
 		<div id="splash"></div>
 		<div id="logo">MiMark</div>
 		<p id="counter"></p>
+		<div id="ex">Extreme Mode: <input type="checkbox"/></div>
 		<section id="info">
 			<div id='fps'></div>
 		</section>
