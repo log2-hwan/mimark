@@ -153,10 +153,10 @@
 							var xhr = new XMLHttpRequest();
 							xhr.open('GET','mi.wav',true);
 							xhr.responseType = 'arraybuffer';
-							xhr.onreadystatechange = function(res) {
-								if (res.target.readyState == 4) {
-									if (waContext) buf = waContext.createBuffer(res.target.response,false);
-									else if (adAudio) buf = new Float32Array(res.target.response);
+							xhr.onreadystatechange = function() {
+								if (readyState == 4) {
+									if (waContext) buf = waContext.createBuffer(response,false);
+									else if (adAudio) buf = new Float32Array(response);
 								}
 							};
 							xhr.send();
