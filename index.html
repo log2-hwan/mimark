@@ -198,7 +198,7 @@
 				bx = (bx+1)%360;
 				by = (by+2)%360;
 				bz = (bz+3)%360;
-				window.requestAnimationFrame(mi2);
+				setTimeout(window.requestAnimationFrame, 0, mi2);
 			}
 			//window.ontouchmove = function(e) { e.preventDefault(); };
 			//window.ontouchstart = window.ontouchmove = window.onkeydown = window.onmousedown = window.onmousemove = window.ondevicemotion = window.ondeviceorientation = mi;
