@@ -130,9 +130,10 @@
 				window.onmousemove = function(e) { e.preventDefault(); };
 				
 				window.requestAnimationFrame = window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame;
-				var ip = $('input');
-				ip.click(function() {
-					isEx = !isEx;
+				var ip = getElementByTagName('input')[0];
+				isEx = ip.checked;
+				ip.onchange(function() {
+					isEx = this.checked;
 					var tstyle = isEx?'preserve-3d':'flat';
 					$('li').css({
 						webkitTransformStyle:tstyle,
@@ -141,7 +142,6 @@
 						transformStyle:tstyle
 					});
 				});
-				ip[0].disabled = false;
 				$('#splash').css('opacity',1);
 				lis = $('ul li');
 				setTimeout(function() {
