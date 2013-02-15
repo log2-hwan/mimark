@@ -130,7 +130,7 @@
 				window.onmousemove = function(e) { e.preventDefault(); };
 				
 				window.requestAnimationFrame = window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame;
-				var ip = getElementByTagName('input')[0];
+				var ip = getElementsByTagName('input')[0];
 				isEx = ip.checked;
 				ip.onchange(function() {
 					isEx = this.checked;
@@ -259,7 +259,7 @@
 		<div id="splash"></div>
 		<div id="logo">MiMark</div>
 		<p id="counter"></p>
-		<div id="ex">Extreme Mode: <input type="checkbox" disabled=""/></div>
+		<div id="ex">Extreme Mode: <input type="checkbox"/></div>
 		<section id="info">
 			<div id='fps'></div>
 		</section>
