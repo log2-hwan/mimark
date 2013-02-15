@@ -132,7 +132,7 @@
 				window.requestAnimationFrame = window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame;
 				var ip = document.getElementsByTagName('input')[0];
 				isEx = ip.checked;
-				ip.onchange(function() {
+				ip.onchange = function() {
 					isEx = this.checked;
 					var tstyle = isEx?'preserve-3d':'flat';
 					$('li').css({
@@ -141,7 +141,7 @@
 						oTransformStyle:tstyle,
 						transformStyle:tstyle
 					});
-				});
+				};
 				$('#splash').css('opacity',1);
 				lis = $('ul li');
 				setTimeout(function() {
