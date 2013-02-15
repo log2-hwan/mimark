@@ -130,7 +130,7 @@
 				window.onmousemove = function(e) { e.preventDefault(); };
 				
 				window.requestAnimationFrame = window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame;
-				var ip = getElementsByTagName('input')[0];
+				var ip = document.getElementsByTagName('input')[0];
 				isEx = ip.checked;
 				ip.onchange(function() {
 					isEx = this.checked;
