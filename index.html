@@ -2,8 +2,8 @@
 <html>
 	<head>
 		<title>Mi chin geot gattayo</title>
-		<meta name="apple-mobile-web-app-capable" content="yes">
-		<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no" />
 		<meta charset="UTF-8" />
 		<script src="flotr2.min.js"></script>
 		<script src="http://code.jquery.com/jquery-latest.js"></script>
@@ -130,8 +130,10 @@
 				window.onmousemove = function(e) { e.preventDefault(); };
 				
 				window.requestAnimationFrame = window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame;
-				$('input').click(function() {
-					isEx = !isEx;
+				var ip = document.getElementsByTagName('input')[0];
+				isEx = ip.checked;
+				ip.onchange = function() {
+					isEx = this.checked;
 					var tstyle = isEx?'preserve-3d':'flat';
 					$('li').css({
 						webkitTransformStyle:tstyle,
@@ -139,7 +141,7 @@
 						oTransformStyle:tstyle,
 						transformStyle:tstyle
 					});
-				});
+				};
 				$('#splash').css('opacity',1);
 				lis = $('ul li');
 				setTimeout(function() {
@@ -196,7 +198,7 @@
 				bx = (bx+1)%360;
 				by = (by+2)%360;
 				bz = (bz+3)%360;
-				window.requestAnimationFrame(mi2);
+				setTimeout(window.requestAnimationFrame, 0, mi2);
 			}
 			//window.ontouchmove = function(e) { e.preventDefault(); };
 			//window.ontouchstart = window.ontouchmove = window.onkeydown = window.onmousedown = window.onmousemove = window.ondevicemotion = window.ondeviceorientation = mi;
