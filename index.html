@@ -148,8 +148,8 @@
 					$('#splash').css('opacity',0);
 					setTimeout(function() {	
 						$('#splash').remove();
+						var xhr = new XMLHttpRequest();
 						if (waContext || adAudio) {
-							var xhr = new XMLHttpRequest();
 							xhr.open('GET','mi.wav',true);
 							xhr.responseType = 'arraybuffer';
 							xhr.onload = function() {
@@ -161,6 +161,16 @@
 							};
 							xhr.send();
 						}
+						else {
+							xhr.open('GET', 'mi.mp4', true);
+							xhr.responseType = "blob";
+							xhr.onload = function () {
+								if (this.status === 200) {
+									buf = URL.createObjectURL(this.response.slice(0, this.response.size, 'audio/mp4'));//slice is only for GitHub Pages which gives an improper mime type.
+								}
+							};
+						}
+
 						setInterval(mi,50);
 						s = Date.now();
 						p = document.getElementById('fps');
@@ -198,7 +208,7 @@
 				bx = (bx+1)%360;
 				by = (by+2)%360;
 				bz = (bz+3)%360;
-				setTimeout(window.requestAnimationFrame, 0, mi2);
+				window.requestAnimationFrame(mi2)
 			}
 			//window.ontouchmove = function(e) { e.preventDefault(); };
 			//window.ontouchstart = window.ontouchmove = window.onkeydown = window.onmousedown = window.onmousemove = window.ondevicemotion = window.ondeviceorientation = mi;
@@ -237,6 +247,7 @@
 					if (s.start) s.start(0); else s.noteOn(0);
 				}
 				else if (adAudio) adAudio.mozWriteAudio(buf);
+				else (new Audio(buf)).play();
 				
 				var divnum = $('div').length-5;
 				$('p').html(divnum+' mi<br />'+cur+' FPS');
