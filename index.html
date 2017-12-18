@@ -6,15 +6,10 @@
 		<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no" />
 		<meta charset="UTF-8" />
 		<script src="flotr2.min.js"></script>
-		<script src="http://code.jquery.com/jquery-latest.js"></script>
 		<style>
 		* {
 			perspective: 1000px;
 			perspective-origin: 0 0;
-			-o-perspective: 1000px;
-			-o-perspective-origin: 0 0;
-			-moz-perspective: 1000px;
-			-moz-perspective-origin: 0 0;
 			-webkit-perspective: 1000px;
 			-webkit-perspective-origin: 0 0;
 		}
@@ -100,22 +95,16 @@
 			background-size: cover;
 			opacity: 0;
 			transition: opacity 2s;
-			-moz-transition: opacity 2s;
 			-webkit-transition: opacity 2s;
-			-o-transition: opacity 2s;
 			z-index: 9998;
 		}
 		div.mi {
 			-webkit-transition: -webkit-transform 1s;
-			-moz-transition: -moz-transform 1s;
-			-o-transition: -o-transform 1s;
 			transition: transform 1s;
 			position: absolute;
 			top: 50%;
 			left: 50%;
 			-webkit-transform: scale3d(1,1,1) translate3d(0px,0px,0px) rotateX(0deg) rotateY(0deg) rotateZ(0deg);
-			-moz-transform: scale3d(1,1,1) translate3d(0px,0px,0px) rotateX(0deg) rotateY(0deg) rotateZ(0deg);
-			-o-transform: scale3d(1,1,1) translate3d(0px,0px,0px) rotateX(0deg) rotateY(0deg) rotateZ(0deg);
 			transform: scale3d(1,1,1) translate3d(0px,0px,0px) rotateX(0deg) rotateY(0deg) rotateZ(0deg);
 		}
 		</style>
@@ -129,25 +118,23 @@
 			window.onload = function() {
 				window.onmousemove = function(e) { e.preventDefault(); };
 				
-				window.requestAnimationFrame = window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame;
+				window.requestAnimationFrame = window.requestAnimationFrame || window.webkitRequestAnimationFrame;
 				var ip = document.getElementsByTagName('input')[0];
 				isEx = ip.checked;
 				ip.onchange = function() {
 					isEx = this.checked;
 					var tstyle = isEx?'preserve-3d':'flat';
-					$('li').css({
-						webkitTransformStyle:tstyle,
-						MozTransformStyle:tstyle,
-						oTransformStyle:tstyle,
-						transformStyle:tstyle
+					Array.prototype.forEach.call(document.querySelectorAll('li'), function(el) {
+						el.style.webkitTransformStyle = el.style.transformStyle = tstyle;
 					});
 				};
-				$('#splash').css('opacity',1);
-				lis = $('ul li');
+				var splash = document.querySelector('#splash')
+				splash.style.opacity = '1';
+				lis = Array.prototype.slice.call(document.querySelectorAll('ul li'));
 				setTimeout(function() {
-					$('#splash').css('opacity',0);
+					splash.style.opacity = '0';
 					setTimeout(function() {	
-						$('#splash').remove();
+						splash.parentElement.removeChild(splash);
 						var xhr = new XMLHttpRequest();
 						if (waContext || adAudio) {
 							xhr.open('GET','mi.wav',true);
@@ -193,18 +180,11 @@
 				var d = (time-t)/1000;
 				t = time;
 				cur = (1/d).toFixed(1);
-				$('ul li').each(function() {
-					var $this = $(this);
-					var idx = $('ul li').index(this);
+				lis.forEach(function(el, idx) {
 					//$this.css('color','rgb('+(bx+30*idx)+','+(by+30*idx)+','+(bz+30*idx)+')');
 					var rot ='rotateX('+(bx+30*idx)+'deg) rotateY('+(by+30*idx)+'deg) rotateZ('+(bz+30*idx)+'deg)';
-					$this.css({
-						webkitTransform:rot,
-						MozTransform:rot,
-						oTransform:rot,
-						transform:rot,
-						color:(isEx)?'rgb('+(bx+15*idx)%255+','+(by+15*idx)%255+','+(bz+15*idx)%255+')':'#ccc'
-					});
+					el.style.webkitTransform = el.style.transform = rot;
+					el.style.color = (isEx)?'rgb('+(bx+15*idx)%255+','+(by+15*idx)%255+','+(bz+15*idx)%255+')':'#ccc';
 				});
 				bx = (bx+1)%360;
 				by = (by+2)%360;
@@ -214,7 +194,7 @@
 			//window.ontouchmove = function(e) { e.preventDefault(); };
 			//window.ontouchstart = window.ontouchmove = window.onkeydown = window.onmousedown = window.onmousemove = window.ondevicemotion = window.ondeviceorientation = mi;
 			function mi() {
-				var mi = $('<div class="mi">미</div>');
+				var mi = document.createElement('div');
 				var x = Math.random()*window.innerWidth/2-window.innerWidth/4;
 				var y = Math.random()*window.innerHeight/2-window.innerHeight/4;
 				var z = Math.random()*500-250;
@@ -226,6 +206,8 @@
 				//mi.css('margin-left',-mi.width()/2+'px');
 				var n = parseInt(Math.random()*lis.length);
 				lis[n].appendChild(mi[0]);
+				mi.className = 'mi';
+				mi.textContent = '미';
 				//mi.appendTo('ul li:nth-child('+n+')');
 /*
 				x += e.direction[0]*100;
@@ -234,12 +216,7 @@
 */
 				setTimeout(function() {
 					var transform = 'scale3d('+scale+','+scale+',1) translate3d('+x+'px,'+y+'px,'+z+'px) rotateX('+rotateX+'deg) rotateY('+rotateY+'deg) rotateZ('+rotateZ+'deg)';
-					mi.css({
-						webkitTransform:transform,
-						MozTransform:transform,
-						oTransform:transform,
-						transform:transform
-					});
+					mi.style.webkitTransformStyle = mi.style.transformStyle = transform;
 				},100);
 				if (waContext) {
 					var s = waContext.createBufferSource();
@@ -250,8 +227,8 @@
 				else if (adAudio) adAudio.mozWriteAudio(buf);
 				else (new Audio(buf)).play();
 				
-				var divnum = $('div').length-5;
-				$('p').html(divnum+' mi<br />'+cur+' FPS');
+				var divnum = document.querySelectorAll('.mi').length;
+				document.querySelector('#counter').innerHTML = (divnum+' mi<br />'+cur+' FPS');
 				if(fps.length>300)
 					fps.shift();
 				fps.push([divnum,cur]);
